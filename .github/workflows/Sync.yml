@@ -17,7 +17,13 @@ jobs:
           destination-repo: git@gitee.com:senxia-1994/daily-report.git
 
   deploy-pages:
-    needs: sync
+    # 将此片段加入到 deploy-pages job steps 的第一项（临时用于调试）
+- name: Check Gitee token and repo access
+  run: |
+    echo "Check current user"
+    curl -s "https://gitee.com/api/v5/user?access_token=${{ secrets.GITEE_PASSWORD }}" -w "\nHTTP_CODE:%{http_code}\n"
+    echo "Check repo info"
+    curl -s "https://gitee.com/api/v5/repos/senxia-1994/daily-report?access_token=${{ secrets.GITEE_PASSWORD}}" -w "\nHTTP_CODE:%{http_code}\n"needs: sync
     runs-on: ubuntu-latest
     steps:
       - name: Deploy Gitee Pages
